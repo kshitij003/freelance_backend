@@ -11,7 +11,7 @@ app = FastAPI(title='Praktiki Internship API - Final')
 
 # Read allowed origins from environment variable (comma-separated).
 # Example: ALLOWED_ORIGINS=https://myapp.vercel.app,https://www.mydomain.com
-origins_env = os.getenv('ALLOWED_ORIGINS', 'http://localhost:8001,http://127.0.0.1:8001')
+origins_env = os.getenv('https://www.gvwelkin.com','https://trial3-abc.vercel.app/')
 origins = [o.strip() for o in origins_env.split(',') if o.strip()]
 
 # For demo convenience, if ALLOWED_ORIGINS contains the single value "ALL", allow all.
