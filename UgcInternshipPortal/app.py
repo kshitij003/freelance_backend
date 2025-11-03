@@ -17,28 +17,33 @@ from ceescm import get_sample_ceescm_tokens
 from wmd_matcher import match_internship, WMDMatcher
 from report_generator import generate_pdf_report
 from abc_portal import abc_bp, save_to_abc
+from flask_cors import CORS
+import os
 
-app = Flask(__name__)
-app.secret_key = os.environ.get('SESSION_SECRET', 'dev-secret-key-change-in-production')
-
-# CORS configuration (allow frontend origins from environment)
 def _get_allowed_origins():
     env_origins = os.environ.get('CORS_ALLOWED_ORIGINS') or os.environ.get('ALLOWED_ORIGINS')
     frontend_url = os.environ.get('FRONTEND_URL')
     render_external_url = os.environ.get('RENDER_EXTERNAL_URL')
     origins = set()
+
     for value in [env_origins, frontend_url, render_external_url]:
         if value:
+            if value.strip() == '*':
+                return '*'  # ✅ handle wildcard directly
             if ',' in value:
                 origins.update([o.strip() for o in value.split(',') if o.strip()])
             else:
                 origins.add(value.strip())
+
     # Fallback for development
     if not origins:
-        return ['*']
+        return '*'
     return list(origins)
 
-CORS(app, resources={r"/api/*": {"origins": _get_allowed_origins()}}, supports_credentials=True)
+allowed_origins = _get_allowed_origins()
+
+app = Flask(__name__)
+CORS(app, origins=allowed_origins, supports_credentials=True)
 
 # Register ABC Portal Blueprint
 app.register_blueprint(abc_bp)
