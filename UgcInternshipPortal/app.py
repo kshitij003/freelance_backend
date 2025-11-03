@@ -42,25 +42,34 @@ import os
 
 # allowed_origins = _get_allowed_origins()
 
+from flask import Flask, request, make_response
+from flask_cors import CORS
+
 app = Flask(__name__)
+
+# ✅ Enable CORS for all routes
 CORS(app, resources={r"/*": {"origins": "*"}})
 
+# ✅ Handle preflight requests (for browsers)
+@app.before_request
+def handle_preflight():
+    if request.method == "OPTIONS":
+        response = make_response()
+        response.headers["Access-Control-Allow-Origin"] = "*"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+        return response, 200
+
+# ✅ Ensure CORS headers always exist in responses
 @app.after_request
 def add_cors_headers(response):
     response.headers["Access-Control-Allow-Origin"] = "*"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
     return response
-
-# ✅ Handle preflight OPTIONS requests globally
-@app.route('/', defaults={'path': ''}, methods=['OPTIONS'])
-@app.route('/<path:path>', methods=['OPTIONS'])
-def handle_options(path):
-    response = jsonify({'message': 'CORS preflight success'})
-    response.headers["Access-Control-Allow-Origin"] = "*"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
     return response
+
 app.register_blueprint(abc_bp)
 
 # Configuration
