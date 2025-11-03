@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Certificate - UGC Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="mb-4">Upload Internship Certificate</h2>
+        
+        <div class="card">
+            <div class="card-body">
+                <p class="text-muted">
+                    Upload your internship certificate or paste the text. We support images (PNG, JPG), 
+                    PDFs, and DOCX files. Our system will automatically extract relevant fields.
+                </p>
+
+                <div class="mb-4">
+                    <h5>Option 1: Upload File</h5>
+                    <input type="file" class="form-control" id="certificateFile" accept=".png,.jpg,.jpeg,.pdf,.docx,.txt">
+                    <small class="text-muted">Supported formats: PNG, JPG, PDF, DOCX, TXT</small>
+                </div>
+
+                <div class="text-center my-3">
+                    <strong>OR</strong>
+                </div>
+
+                <div class="mb-4">
+                    <h5>Option 2: Paste Text</h5>
+                    <textarea class="form-control" id="certificateText" rows="8" 
+                              placeholder="Paste your certificate text here..."></textarea>
+                </div>
+
+                <button class="btn btn-primary btn-lg w-100" id="extractBtn">
+                    Extract & Open Form
+                </button>
+            </div>
+        </div>
+
+        <div id="progressSection" class="card mt-4" style="display:none;">
+            <div class="card-body">
+                <h5>Extraction Progress</h5>
+                <div class="progress" style="height: 30px;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                         id="progressBar" role="progressbar" style="width: 0%">
+                    </div>
+                </div>
+                <p class="text-center mt-2" id="progressText">Initializing...</p>
+            </div>
+        </div>
+
+        <div id="errorSection" class="alert alert-danger mt-4" style="display:none;"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+{% endblock %}
