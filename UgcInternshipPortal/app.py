@@ -43,16 +43,24 @@ import os
 # allowed_origins = _get_allowed_origins()
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True, allow_headers="*")
+CORS(app, resources={r"/*": {"origins": "*"}})
 
-# ✅ Ensure OPTIONS requests are properly handled
 @app.after_request
-def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+def add_cors_headers(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
     return response
-# Register ABC Portal Blueprint
+
+# ✅ Handle preflight OPTIONS requests globally
+@app.route('/', defaults={'path': ''}, methods=['OPTIONS'])
+@app.route('/<path:path>', methods=['OPTIONS'])
+def handle_options(path):
+    response = jsonify({'message': 'CORS preflight success'})
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    return response
 app.register_blueprint(abc_bp)
 
 # Configuration
@@ -584,22 +592,7 @@ def push_to_abc_simulator(payload):
         'timestamp': datetime.now().isoformat()
     }
 
-@app.after_request
-def after_request(response):
-    response.headers["Access-Control-Allow-Origin"] = "*"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type,Authorization"
-    response.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS"
-    return response
 
-# ✅ Explicitly handle preflight (OPTIONS) requests for all endpoints
-@app.before_request
-def handle_options():
-    if request.method == "OPTIONS":
-        resp = app.make_response("")
-        resp.headers["Access-Control-Allow-Origin"] = "*"
-        resp.headers["Access-Control-Allow-Headers"] = "Content-Type,Authorization"
-        resp.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS"
-        return resp
 
 
 # ============ RUN ============
