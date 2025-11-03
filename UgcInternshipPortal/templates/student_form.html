@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}Student Form - UGC Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <h2 class="mb-4">Internship Submission Form</h2>
+
+        <div id="confidenceIndicator" class="alert" style="display:none;"></div>
+
+        <form id="studentForm">
+            <input type="hidden" id="uploadId" value="{{ upload_id }}">
+            <input type="hidden" id="fromUpload" value="{{ from_upload }}">
+
+            <div class="card mb-4">
+                <div class="card-header"><h5>Student Information</h5></div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Student Name *</label>
+                        <input type="text" class="form-control" id="name" required>
+                        <div class="field-confidence" id="name_conf"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="apaarId" class="form-label">APAAR ID</label>
+                        <input type="text" class="form-control" id="apaarId">
+                        <div class="field-confidence" id="apaarId_conf"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="institutionCode" class="form-label">Institution Code</label>
+                        <input type="text" class="form-control" id="institutionCode">
+                        <div class="field-confidence" id="institutionCode_conf"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header"><h5>Internship Details</h5></div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="organization" class="form-label">Organization Name *</label>
+                        <input type="text" class="form-control" id="organization" required>
+                        <div class="field-confidence" id="organization_conf"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="internshipTitle" class="form-label">Internship Title *</label>
+                        <input type="text" class="form-control" id="internshipTitle" required>
+                        <div class="field-confidence" id="internshipTitle_conf"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="startDate" class="form-label">Start Date *</label>
+                            <input type="date" class="form-control" id="startDate" required>
+                            <div class="field-confidence" id="startDate_conf"></div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="endDate" class="form-label">End Date *</label>
+                            <input type="date" class="form-control" id="endDate" required>
+                            <div class="field-confidence" id="endDate_conf"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="hours" class="form-label">Total Hours *</label>
+                        <input type="number" class="form-control" id="hours" required>
+                        <div class="field-confidence" id="hours_conf"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="level" class="form-label">Level</label>
+                        <select class="form-control" id="level">
+                            <option value="">Select Level</option>
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="logs" class="form-label">Work Description / Logs</label>
+                        <textarea class="form-control" id="logs" rows="5" 
+                                  placeholder="Describe your internship work, technologies used, projects completed..."></textarea>
+                        <small class="text-muted">Detailed description helps improve curriculum matching</small>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-lg w-100" id="submitBtn">
+                Submit for Credit Evaluation
+            </button>
+        </form>
+
+        <div id="errorSection" class="alert alert-danger mt-4" style="display:none;"></div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Submission</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-warning">
+                    <strong>Warning:</strong> Some fields were auto-detected with low confidence. 
+                    Are you sure the information is correct?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Review Again</button>
+                <button type="button" class="btn btn-primary" id="confirmSubmit">Yes, Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/student_form.js') }}"></script>
+{% endblock %}
