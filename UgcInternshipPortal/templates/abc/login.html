@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABC/UGC Portal - Student Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .abc-portal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        .login-container {
+            max-width: 450px;
+            margin: 2rem auto;
+        }
+        .login-card {
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        .login-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px 10px 0 0;
+        }
+        .btn-abc-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            font-weight: bold;
+        }
+        .btn-abc-login:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            color: white;
+        }
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="abc-portal-header">
+        <div class="container">
+            <h1 class="mb-0">🎓 ABC/UGC Portal</h1>
+            <p class="mb-0">Academic Bank of Credits - Student Portal</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="login-container">
+            <div class="card login-card">
+                <div class="login-header">
+                    <h3 class="mb-0">Student Login</h3>
+                    <small>Access your internship credit approval status</small>
+                </div>
+                <div class="card-body p-4">
+                    {% if error %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle"></i> {{ error }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endif %}
+
+                    <form id="loginForm" method="POST">
+                        <div class="mb-3">
+                            <label for="apaar_id" class="form-label">APAAR ID</label>
+                            <input type="text" class="form-control" id="apaar_id" name="apaar_id" 
+                                   placeholder="Enter your APAAR ID" required>
+                            <small class="text-muted">Your unique Academic ID</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" 
+                                   placeholder="Enter your password" required>
+                        </div>
+                        <button type="submit" class="btn btn-abc-login w-100">
+                            <i class="bi bi-box-arrow-in-right"></i> Login to ABC Portal
+                        </button>
+                    </form>
+
+                    <div class="info-box">
+                        <strong>📋 Demo Credentials:</strong>
+                        <p class="mb-1"><small>For testing, use any approved APAAR ID with the same ID as password.</small></p>
+                        <p class="mb-0"><small>Example: APAAR ID: <code>2024-MH-123456</code>, Password: <code>2024-MH-123456</code></small></p>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="text-center">
+                        <a href="/" class="text-decoration-none">
+                            <i class="bi bi-arrow-left"></i> Back to Main Portal
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 text-center text-muted">
+                <small>
+                    <i class="bi bi-shield-check"></i> Secure ABC Portal | 
+                    UGC Internship Credit System
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
